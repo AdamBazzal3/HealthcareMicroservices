@@ -1,0 +1,15 @@
+﻿@page "/"
+@using HealthcareUI.Models
+
+
+<PageTitle>Index</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        
+        <HealthcareUI.Pages.Crud.Patients.Index/>
+    </Authorized>
+    <NotAuthorized>
+        <HealthcareUI.Pages.Auth.Login/>
+        
+    </NotAuthorized>
+</AuthorizeView>

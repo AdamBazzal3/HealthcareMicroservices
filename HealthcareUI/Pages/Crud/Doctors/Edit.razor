@@ -1,0 +1,149 @@
+﻿@page "/Doctors/Edit/{SetHashCode:int}"
+@using HealthcareUI.Models
+
+<PageTitle>Edit Doctor</PageTitle>
+<AuthorizeView Context="authContext">
+    <Authorized>
+
+<div class="container-fluid my-5">
+    <h1 class="text-center">Edit a doctor</h1>
+    <a class="btn btn-danger" @onclick="OnDelete">
+        <img src="/Images/bin.png" width="30" height="30"/>
+    </a>
+    <hr/>
+            <EditForm EditContext="@editContext" Model="@doctor" OnValidSubmit="@HandleValidSubmit">
+                <div class="row">
+                    <!-- First Name -->
+                    <div class="col-md-12 mb-2">
+                        <label class="control-label">First Name</label>
+                        <InputText @bind-Value="doctor.FirstName" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="isAvailable" class="form-label">Is Available:</label>
+                        <InputCheckbox id="isAvailable" @bind-Value="doctor.IsAvailable" class="form-check-input" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="isActive" class="form-label">Is Active:</label>
+                        <InputCheckbox id="isActive" @bind-Value="doctor.IsActive" class="form-check-input" />
+                    </div>
+                    <!-- Last Name -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Last Name</label>
+                        <InputText @bind-Value="doctor.LastName" class="form-control" />
+                    </div>
+
+                    <!-- Contact Name -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Contact Name</label>
+                        <InputText @bind-Value="doctor.ContactName" class="form-control" />
+                    </div>
+
+                    <!-- Mobile Phone -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Mobile Phone</label>
+                        <InputText @bind-Value="doctor.MobilePhone" class="form-control" />
+                    </div>
+
+                    <!-- Fax -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Fax</label>
+                        <InputText @bind-Value="doctor.Fax" class="form-control" />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Email</label>
+                        <InputText @bind-Value="doctor.Email" class="form-control" />
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Date of Birth</label>
+                        <InputDate @bind-Value="doctor.DateOfBirth" class="form-control" />
+                    </div>
+
+
+
+                    <!-- Is Active -->
+                    <div class="col-md-6 mb-2">
+                        <label for="address" class="form-label">Address</label>
+                        <InputText id="address" @bind-Value="doctor.Location.Address" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <label for="city" class="form-label">City</label>
+                        <InputText id="city" @bind-Value="doctor.Location.City" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <label for="country" class="form-label">Country</label>
+                        <InputText id="country" @bind-Value="doctor.Location.Country" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <label for="PostalCode" class="form-label">Healthcare Code</label>
+                        <InputText id="PostalCode" @bind-Value="doctor.Location.PostalCode" class="form-control" />
+                    </div>
+
+
+                    <!-- Insurance Details -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Specialty</label>
+                        <InputText @bind-Value="doctor.Specialty" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Schedule</label>
+                        <InputText @bind-Value="doctor.LicenseNumber" class="form-control" />
+                    </div>
+                    <!-- Insurance Details -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Schedule</label>
+                        <InputText @bind-Value="doctor.Schedule" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Employement Details</label>
+                        <InputText @bind-Value="doctor.EmploymentDetails" class="form-control" />
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label class="control-label">Contact Info</label>
+                        <InputText @bind-Value="doctor.ContactInformation" class="form-control" />
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="col-md-12">
+                        <input type="submit" class="btn btn-primary" value="Save" />
+                    </div>
+                </div>
+            </EditForm>
+            @if (displayError)
+            {
+                @if (Success)
+                {
+
+
+                    <div class="alert alert-info alert-dismissible mt-3" role="alert">
+                        @Alert
+                    </div>
+                
+                }
+                else
+                {
+                            <div class="alert alert-danger alert-dismissible mt-3" role="alert">
+                        @Alert
+                    </div>
+                }
+            }
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-danger">
+                        please <a href="Identity/Account/Login?ReturnUrl=/Bookings">login</a> before accessing this page.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+

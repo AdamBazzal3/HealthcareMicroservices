@@ -1,0 +1,210 @@
+﻿@page "/Patients/Edit/{SetHashCode:int}"
+@using HealthcareUI.Models
+
+<PageTitle>Edit Patient</PageTitle>
+<AuthorizeView Context="authContext">
+    <Authorized>
+
+<div class="container-fluid my-5">
+    <h1 class="text-center">Edit a patient</h1>
+    <a class="btn btn-danger" @onclick="OnDelete">
+        <img src="/Images/bin.png" width="30" height="30"/>
+    </a>
+    <hr/>
+            <EditForm EditContext="@editContext" Model="@patient" OnValidSubmit="HandleValidSubmit">
+                <div class="row">
+                    <!-- First Name -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">First Name</label>
+                        <InputText @bind-Value="patient.FirstName" class="form-control" />
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Last Name</label>
+                        <InputText @bind-Value="patient.LastName" class="form-control" />
+                    </div>
+
+                    <!-- Contact Name -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Contact Name</label>
+                        <InputText @bind-Value="patient.ContactName" class="form-control" />
+                    </div>
+
+                    <!-- Mobile Phone -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Mobile Phone</label>
+                        <InputText @bind-Value="patient.MobilePhone" class="form-control" />
+                    </div>
+
+                    <!-- Fax -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Fax</label>
+                        <InputText @bind-Value="patient.Fax" class="form-control" />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Email</label>
+                        <InputText @bind-Value="patient.Email" class="form-control" />
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Date of Birth</label>
+                        <InputDate @bind-Value="patient.DateOfBirth"  class="form-control" />
+                    </div>
+
+
+
+                    <!-- Is Active -->
+                    <div class="col-md-6 mb-2">
+                        <label for="address" class="form-label">Address</label>
+                        <InputText id="address" @bind-Value="patient.Location.Address" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <label for="city" class="form-label">City</label>
+                        <InputText id="city" @bind-Value="patient.Location.City" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <label for="country" class="form-label">Country</label>
+                        <InputText id="country" @bind-Value="patient.Location.Country" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <label for="PostalCode" class="form-label">Postal Code</label>
+                        <InputText id="PostalCode" @bind-Value="patient.Location.PostalCode" class="form-control" />
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="col-md-6 mb-2">
+                        <label class="control-label">Gender</label>
+                        <InputSelect @bind-Value="patient.Gender" class="form-select">
+                            <option value="">Please select one</option>
+                            @foreach (var gender in Enum.GetValues(typeof(Gender)))
+                            {
+                                <option value="@gender">@gender</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <!-- Insurance Details -->
+                    <div class="col-md-12 mb-2">
+                        <label class="control-label">Insurance Details</label>
+                        <InputText @bind-Value="patient.InsuranceDetails" class="form-control" />
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-md-12">
+                        <input type="submit" class="btn btn-primary" value="Submit"/>
+                    </div>
+                </div>
+            </EditForm>
+            @if(displayError){
+                @if (Success)
+                {
+
+
+                    <div class="alert alert-info alert-dismissible mt-3" role="alert">
+                        @Alert
+                    </div>
+                
+                }
+                else
+                {
+                            <div class="alert alert-danger alert-dismissible mt-3" role="alert">
+                        @Alert
+                    </div>
+                }
+            }
+
+                <div class="p-4">
+                    <button class="btn btn-primary" @onclick="FetchMedicalHistory">Fetch Medical History</button>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Record ID</th>
+                            <th scope="col">Is Active</th>
+                            <th scope="col">Patient Name</th>
+                            <th scope="col">Doctor Name</th>
+                            <th scope="col">Date of Visit</th>
+                            <th scope="col">Clinical Notes</th>
+                            <th scope="col">Test Results</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (IsFetching)
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center">
+
+                                    <div class="d-flex justify-content-center">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else{
+                            @if(IsSuccess){
+                            @if (MedicalRecords != null && MedicalRecords.Count > 0)
+                            {
+                                @foreach (var record in MedicalRecords)
+                                {
+                                    <tr>
+                                        <td>@record.Id</td>
+                                        <td>
+                                            @if (record.IsActive)
+                                            {
+                                                <span class="badge bg-success">Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            }
+                                        </td>
+                                        <td>@record.Patient?.FirstName @record.Patient?.LastName</td>
+                                        <td>@record.Doctor?.FirstName @record.Doctor?.LastName</td>
+                                        <td>@record.DateOfVisit.ToShortDateString()</td>
+                                        <td>@record.ClinicalNotes</td>
+                                        <td>@record.TestResults</td>
+
+                                    </tr>
+                                }
+                            }
+                        
+                            else
+                            {
+                                <tr>
+                                    <td colspan="9" class="text-center">No available medical records</td>
+                                </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="9" class="text-center">Clinic service is currently not available. Wait one minute then try again.</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-danger">
+                        please <a href="Identity/Account/Login?ReturnUrl=/Bookings">login</a> before accessing this page.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+

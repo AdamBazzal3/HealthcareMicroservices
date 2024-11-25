@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using HealthcareUI.AuthenticationState;
+
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <NavLink class="navbar-brand" href="#">
+        <img width="60" src="/Images/Logo.svg" class="img-fluid h-100" />
+    </NavLink>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <AuthorizeView>
+                <Authorized>
+                    <NavLink class="nav-item nav-link" href="/Patients" Match="NavLinkMatch.All">Patients</NavLink>
+                    <NavLink class="nav-item nav-link" href="/Appointments" Match="NavLinkMatch.All">Appointments</NavLink>
+                    <NavLink class="nav-item nav-link" href="/Doctors" Match="NavLinkMatch.All">Doctors</NavLink>
+                    <NavLink class="nav-item nav-link" href="/MedicalRecords" Match="NavLinkMatch.All">Clinic</NavLink>
+                    <NavLink class="nav-item nav-link" href="/Bills" Match="NavLinkMatch.All">Bills</NavLink>
+                </Authorized>
+                <NotAuthorized>
+
+                </NotAuthorized>
+            </AuthorizeView>
+            <div class="ms-auto">
+                <AuthorizeView>
+                    <Authorized>
+                            <button class="btn btn-outline-primary" @onclick="()=>logout()">Logout</button>
+    
+
+                    </Authorized>
+                    <NotAuthorized>
+
+
+                        <NavLink class="btn btn-primary" href="/auth/login">Login</NavLink>
+
+
+                        <NavLink class="btn btn-info" href="/auth/signup">SignUp</NavLink>
+                    </NotAuthorized>
+                </AuthorizeView>
+
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool collapseNavMenu = true;
+    private string? NavBarCssClass => collapseNavMenu ? null : "show";
+    private string? NavButtonCssClass => collapseNavMenu ? "collapsed" : null;
+    [Inject]
+    private AuthenticationStateProvider authenticationStateProvider{ get; set; }
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task logout()
+    {
+        var authStateProvider = (HealthcareAuthStateProvider)authenticationStateProvider;
+        await authStateProvider.UpdateAuthState(null);
+
+    }
+}

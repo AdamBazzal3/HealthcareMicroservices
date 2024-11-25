@@ -1,0 +1,92 @@
+﻿@page "/MedicalRecords"
+@using HealthcareUI.Models
+<PageTitle>Medical Records List</PageTitle>
+<AuthorizeView>
+    <Authorized>
+<div class="container-fluid my-5">
+            <h1 class="text-center">Medical Records List</h1>
+            <NavLink href="/MedicalRecords/Create" class="btn">
+        <img src="/Images/plus.png" class="img-fluid" width="30" height="50"/>
+    </NavLink>
+
+    <hr/>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Record ID</th>
+                        <th scope="col">Is Active</th>
+                        <th scope="col">Patient Name</th>
+                        <th scope="col">Doctor Name</th>
+                        <th scope="col">Date of Visit</th>
+                        <th scope="col">Clinical Notes</th>
+                        <th scope="col">Test Results</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (isInitiating)
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center">
+
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else{
+                        @if (MedicalRecords != null && MedicalRecords.Count > 0)
+                        {
+                            @foreach (var record in MedicalRecords)
+                            {
+                                <tr>
+                                    <td>@record.Id</td>
+                                    <td>
+                                        @if (record.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>@record.Patient?.FirstName @record.Patient?.LastName</td>
+                                    <td>@record.Doctor?.FirstName @record.Doctor?.LastName</td>
+                                    <td>@record.DateOfVisit.ToShortDateString()</td>
+                                    <td>@record.ClinicalNotes</td>
+                                    <td>@record.TestResults</td>
+                                    <td>
+                                        <button class="btn btn-link p-0" @onclick="() => OnEdit(record)">
+                                            <img src="/Images/pencil.png" alt="Edit" class="img-fluid" width="30" height="30" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center">No medical records found</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+</div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-danger">
+                        please <a href="auth/login">login</a> before accessing this page.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

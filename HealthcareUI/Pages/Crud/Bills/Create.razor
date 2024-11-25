@@ -1,0 +1,99 @@
+﻿@page "/Bills/Create"
+@using HealthcareUI.Models
+
+<PageTitle>Create Bill</PageTitle>
+<AuthorizeView Context="authContext">
+    <Authorized>
+
+<div class="container-fluid my-5">
+            <h1 class="text-center">Create a Bill</h1>
+    <hr/>
+            <EditForm EditContext="@editContext" Model="@bill" OnValidSubmit="@HandleValidSubmit">
+                <div class="row">
+                    <!-- First Name -->
+                    <div class="col-md-6 mb-3">
+                        <label for="isActive" class="form-label">Is Active:</label>
+                        <InputCheckbox id="isActive" @bind-Value="bill.IsActive" class="form-check-input" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="patient" class="form-label">Patient:</label>
+                        <InputSelect id="patient" @bind-Value="_selectedPatientId" class="form-select">
+                            <option value="">Select Patient</option>
+                            @foreach (var patient in Patients)
+                            {
+                                <option value="@patient.Id.ToString()">@patient.FirstName @patient.LastName</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="doctor" class="form-label">Doctor:</label>
+                        <InputSelect id="doctor" @bind-Value="_selectedDoctorId" class="form-select">
+                            <option value="">Select Doctor</option>
+                            @foreach (var doctor in Doctors)
+                            {
+                                <option value="@doctor.Id.ToString()">@doctor.FirstName @doctor.LastName</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="location" class="form-label">Service Details:</label>
+                        <InputText id="location" @bind-Value="bill.ServiceDetails" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="location" class="form-label">Amount:</label>
+                        <InputNumber id="location" @bind-Value="bill.Amount" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="location" class="form-label">Insurance Claims:</label>
+                        <InputText id="location" @bind-Value="bill.InsuranceClaims" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="control-label">Status</label>
+                        <InputSelect @bind-Value="bill.PaymentStatus" class="form-select">
+                            <option value="">Please select one</option>
+                            @foreach (var s in Enum.GetValues(typeof(BillStatus)))
+                            {
+                                <option value="@s">@s</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="submit" class="btn btn-primary" value="Save" />
+                    </div>
+                </div>
+            </EditForm>
+            @if(displayError){
+                @if (Success)
+                {
+
+
+                    <div class="alert alert-info alert-dismissible mt-3" role="alert">
+                        @Alert
+                    </div>
+                
+                }
+                else
+                {
+                    <div class="alert alert-danger alert-dismissible mt-3" role="alert">
+                        @Alert
+                    </div>
+                }
+            }
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-danger">
+                        please <a href="Identity/Account/Login?ReturnUrl=/Bookings">login</a> before accessing this page.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+

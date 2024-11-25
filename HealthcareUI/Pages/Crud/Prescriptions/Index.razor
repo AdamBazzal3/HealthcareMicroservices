@@ -1,0 +1,74 @@
+﻿@layout MainLayout
+@using HealthcareUI.Models
+@using HealthcareUI.Shared
+<PageTitle>Prescription List</PageTitle>
+<AuthorizeView>
+    <Authorized>
+<div class="container-fluid my-5">
+            <h1 class="text-center">Prescriptions List</h1>
+            <button @onclick="OnAdd" class="btn">
+        <img src="/Images/plus.png" class="img-fluid" width="30" height="50"/>
+    </button>
+
+    <hr/>
+            <EditModal Title="Edit Prescription" prescription="assignedPrescription" IsVisible="isEditModalVisible" OnDeleteEvent="OnDeletePrescription" OnClose="OnClosingEditModal" OnDismiss="OnDismissingEditModal" />
+            <CreateModal Title="Create Prescription" IsVisible="isModalVisible" OnClose="OnClosingModal" OnDismiss="OnDismissingModal"/>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Prescription ID</th>
+                        <th scope="col">Date Issued</th>
+                        <th scope="col">Dosage</th>
+                        <th scope="col">Is Active</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Prescriptions != null && Prescriptions.Count > 0)
+                    {
+                        @foreach (var prescription in Prescriptions)
+                        {
+                            <tr>
+                                <td>@prescription.Id</td>
+                                <td>@prescription.DateIssued.ToShortDateString()</td>
+                                <td>@prescription.Dosage</td>
+                                <td>
+                                    @if (prescription.IsActive)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn btn-link p-0" @onclick="() => OnEdit(prescription)">
+                                        <img src="/Images/pencil.png" alt="Edit" class="img-fluid" width="30" height="30" />
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center">No prescriptions found</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+</div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-danger">
+                        please <a href="auth/login">login</a> before accessing this page.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

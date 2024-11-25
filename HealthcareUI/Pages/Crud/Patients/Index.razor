@@ -1,0 +1,95 @@
+﻿@layout MainLayout
+@page "/Patients"
+@using HealthcareUI.Models
+@using HealthcareUI.Shared
+<PageTitle>Patients List</PageTitle>
+<AuthorizeView>
+    <Authorized>
+
+
+
+
+
+
+<div class="container-fluid my-5">
+    <h1 class="text-center">Patient List</h1>
+    <NavLink href="/Patients/Create" class="btn">
+        <img src="/Images/plus.png" class="img-fluid" width="30" height="50"/>
+    </NavLink>
+
+    <hr/>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">First name</th>
+                        <th scope="col">Last name</th>
+                        <th scope="col">Contact name</th>
+                        <th>Is Active</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (isInitiating)
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center">
+                        
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                            </td>
+                        </tr>
+                    }
+                    else{
+                        @if (Patients != null && Patients.Count > 0)
+                        {
+                            @foreach (Patient p in Patients)
+                            {
+                                <tr>
+                                    <td scope="row">@p.FirstName</td>
+                                    <td>@p.LastName</td>
+                                    <td>@p.ContactName</td>
+                                    <td>
+                                        @if (p.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a class="btn" @onclick="()=>OnEdit(p)">
+                                            <img src="/Images/pencil.png" class="img-fluid" width="30" height="30" />
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center">No patients found</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+</div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-danger">
+                        please <a href="auth/login">login</a> before accessing this page.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

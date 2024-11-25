@@ -1,0 +1,23 @@
+﻿$primary: #04b0f2;
+$primary-rgb: 4, 176, 242;
+$secondary: #2c2e55;
+$white: white;
+$navbar-light-active-color: white;
+$navbar-padding-x: 1.5rem;
+$navbar-light-color: #{$primary};
+$navbar-light-toggler-border-color: $primary;
+$navbar-light-icon-color: #{$primary};
+$navbar-light-hover-color: rgba($primary, .7);
+$border-radius: 0.8rem;
+@import "scss/bootstrap";
+
+nav.navbar {
+    background: $secondary;
+    color: $white;
+    min-height: 70px !important;
+
+    .navbar-nav {
+        width: 100%;
+    }
+}
+

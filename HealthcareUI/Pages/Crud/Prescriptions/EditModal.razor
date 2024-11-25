@@ -1,0 +1,70 @@
+﻿<!-- Modal.razor -->
+<div class="modal @(IsVisible ? "show" : "")" tabindex="-1" style="display:@(IsVisible ? "block" : "none")" @onclick="HandleBackgroundClick">
+    <div class="modal-dialog" @onclick:stopPropagation="true">
+        <div class="modal-content">
+            <EditForm Model="@prescription" OnValidSubmit="HandleValidSubmit">
+            <div class="modal-header">
+                <h5 class="modal-title">@Title</h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                    <a class="btn btn-danger" @onclick="OnDelete">
+                        <img src="/Images/bin.png" width="30" height="30" />
+                    </a>
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+
+
+                    <div class="row">
+
+
+                        <!-- Is Active -->
+                        <div class="col-md-6 mb-2">
+                            <label class="control-label">Is Active</label>
+                            <InputCheckbox @bind-Value="prescription.IsActive" class="form-check-input" />
+                        </div>
+
+                        <!-- Date Issued -->
+                        <div class="col-md-6 mb-2">
+                            <label class="control-label">Date Issued</label>
+                            <InputDate @bind-Value="prescription.DateIssued" class="form-control" />
+                        </div>
+
+                        <!-- Dosage -->
+                        <div class="col-md-6 mb-2">
+                            <label class="control-label">Dosage</label>
+                            <InputText @bind-Value="prescription.Dosage" class="form-control" />
+                        </div>
+
+
+                    </div>
+                
+                @if (displayError)
+                {
+                    @if (Success)
+                    {
+
+
+                        <div class="alert alert-info alert-dismissible mt-3" role="alert">
+                            @Alert
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger alert-dismissible mt-3" role="alert">
+                            @Alert
+                        </div>
+                    }
+                }
+            </div>
+            <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+

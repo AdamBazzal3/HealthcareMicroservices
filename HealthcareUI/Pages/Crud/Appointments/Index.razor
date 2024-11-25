@@ -1,0 +1,102 @@
+﻿@page "/Appointments"
+@using HealthcareUI.Models
+<PageTitle>Appointments List</PageTitle>
+<AuthorizeView>
+    <Authorized>
+
+
+
+
+
+
+<div class="container-fluid my-5">
+    <h1 class="text-center">Appointments List</h1>
+    <NavLink href="/Appointments/Create" class="btn">
+        <img src="/Images/plus.png" class="img-fluid" width="30" height="50"/>
+    </NavLink>
+
+    <hr/>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Patient</th>
+                        <th scope="col">Doctor</th>
+                        <th scope="col">Date and Time</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Reason</th>
+                        <th scope="col">Is Active</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @if (isInitiating)
+                    {
+                        <tr>
+                            <td colspan="9" class="text-center">
+
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else{
+                        @if (Appointments != null && Appointments.Count > 0)
+                        {
+                            @foreach (var appointment in Appointments)
+                            {
+                                <tr>
+                                    <th scope="row">@appointment.Id</th>
+                                    <td>@appointment?.Patient?.FirstName @appointment?.Patient?.LastName</td>
+                                    <td>@appointment?.Doctor?.FirstName @appointment?.Doctor?.LastName</td>
+                                    <td>@appointment?.DateTime.ToString("g")</td>
+                                    <td>@appointment?.Status</td>
+                                    <td>@appointment?.Location</td>
+                                    <td>@appointment?.Reason</td>
+                                    <td>
+                                        @if (appointment.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a class="btn" @onclick="()=>OnEdit(appointment)">
+                                            <img src="/Images/pencil.png" class="img-fluid" width="30" height="30" />
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center">No appointments found</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+</div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-danger">
+                        please <a href="auth/login">login</a> before accessing this page.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

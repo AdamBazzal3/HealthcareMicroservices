@@ -1,0 +1,130 @@
+services:
+
+ consul:
+    image: consul:1.15.4
+    container_name: consul
+    ports:
+      - "8500:8500"   # Consul web UI
+      - "8600:8600/udp"  # DNS interface
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    command: agent -server -bootstrap -ui -client 0.0.0.0
+    networks:
+      - consul_network
+ ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    container_name: ms-sql-server
+
+    environment:
+      SA_PASSWORD: "Pa55w0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - consul_network
+ mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - consul_network
+    volumes:
+      - mongo_data:/data/db
+ healthcareidentityapi:
+    image: ${DOCKER_REGISTRY-}healthcareidentityapi
+    environment:
+      - IDENTITY_API_PORT=8080
+      - HEALTHCARE_IDENTITY_CONNECTIONSTRING=Data Source=ms-sql-server,1433;Initial Catalog=HealthcareIdentity;User ID=SA;Password=Pa55w0rd
+    build:
+      context: HealthcareIdentityAPI
+      dockerfile: Dockerfile
+    networks:
+      - consul_network
+    ports:
+      - "8000:8080"
+    depends_on:
+     - ms-sql-server
+ HealthcarePatientAPI:
+    container_name: HealthcarePatientAPI
+    image: healthcarepatientapi
+    build:
+      context: HealthcarePatientAPIPython
+      dockerfile: Dockerfile
+    environment:
+      - DatabaseName=HealthcarePatient
+      - PATIENT_API_PORT=5000 
+      - ConnectionString=mongodb://mongo:27017
+    networks:
+      - consul_network
+    ports:
+      - "8002:5000"
+    depends_on:
+     - mongo
+
+ healthcareclinicapi:
+    image: ${DOCKER_REGISTRY-}healthcareclinicapi
+    build:
+      context: HealthcareClinicAPI
+      dockerfile: Dockerfile
+    environment:
+      - DatabaseName=HealthcareClinic
+      - CLINIC_API_PORT=8080 
+      - ConnectionString=mongodb://mongo:27017
+    networks:
+      - consul_network
+    ports:
+      - "8003:8080"
+    depends_on:
+     - mongo
+ healthcareappointmentapi:
+    image: ${DOCKER_REGISTRY-}healthcareappointmentapi
+    build:
+      context: HealthcareAppointmentAPI
+      dockerfile: Dockerfile
+    environment:
+      - DatabaseName=HealthcareAppointment
+      - Appointment_API_PORT=8080 
+      - ConnectionString=mongodb://mongo:27017
+    networks:
+      - consul_network
+    ports:
+      - "8004:8080"
+    depends_on:
+     - mongo
+ healthcarebillapi:
+    image: ${DOCKER_REGISTRY-}healthcarebillapi
+    build:
+      context: HealthcareBillAPI
+      dockerfile: Dockerfile
+    environment:
+      - DatabaseName=HealthcareBill
+      - BILL_API_PORT=8080 
+      - ConnectionString=mongodb://mongo:27017
+    networks:
+      - consul_network
+    ports:
+      - "8005:8080"
+    depends_on:
+     - mongo
+
+
+ healthcareui:
+    image: ${DOCKER_REGISTRY-}healthcareui
+    build:
+      context: .
+      dockerfile: HealthcareUI/Dockerfile
+    networks:
+      - consul_network
+    ports:
+      - "8001:8080"
+    depends_on:
+     - healthcareidentityapi
+     - HealthcarePatientAPI
+
+networks:
+  consul_network:
+    # Specify driver options
+    driver: bridge
+volumes:
+  mongo_data:

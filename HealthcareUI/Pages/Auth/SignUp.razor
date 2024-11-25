@@ -1,0 +1,33 @@
+﻿@page "/auth/signup"
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>Sign Up</h2>
+                </div>
+                <div class="card-body">
+                        <div class="form-group row mb-3">
+                            <div class="col-md-6">
+                                <label for="firstName">First Name:</label>
+                                <input @bind-value="User.Firstname" type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastName">Last Name:</label>
+                                <input @bind-value="User.Lastname" type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="username">Username:</label>
+                            <input @bind-value="User.UserName" type="text" class="form-control" id="username" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="password">Password:</label>
+                            <input @bind-value="User.Password" type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" @onclick="SignUpAsync" class="btn btn-primary btn-block">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

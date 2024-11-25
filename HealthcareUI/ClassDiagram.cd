@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HealthcareUI.Models.Appointment">
+    <Position X="9.25" Y="5.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAkAABAAAYAEAIAAAATAAAAAAQAABAAAAAACAA=</HashCode>
+      <FileName>Models\Appointment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Patient" />
+      <Field Name="_Doctor" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HealthcareUI.Models.Doctor">
+    <Position X="4" Y="4.25" Width="3" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAABAAAAQAAQABCAAEAAAAkAiAAAAAAEAAIAAAAA=</HashCode>
+      <FileName>Models\Doctor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthcareUI.Models.MedicalRecord">
+    <Position X="5.75" Y="9" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AJCCAAAAAAAEAAAAEAAIFAEBAAAAAAQAABAAAAAECAA=</HashCode>
+      <FileName>Models\MedicalRecord.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Patient" />
+      <Field Name="_Doctor" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HealthcareUI.Models.Patient">
+    <Position X="13.5" Y="5.25" Width="1.5" />
+    <InheritanceLine Type="HealthcareUI.Utils.Person" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="8.75" Y="3.762" />
+        <Point X="9.125" Y="3.762" />
+        <Point X="9.125" Y="4.875" />
+        <Point X="14.25" Y="4.875" />
+        <Point X="14.25" Y="5.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AIACAEAAAAAQAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Patient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthcareUI.Models.Prescription">
+    <Position X="3.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIISAAAAAAAACAAAEAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Prescription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthcareUI.Utils.Person">
+    <Position X="7.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAgCAAAAAAEAIgAAAAAAAQAEAAABAAAAAAAAg=</HashCode>
+      <FileName>Models\Person.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Location" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HealthcareUI.Utils.Location">
+    <Position X="11.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIIAAAAAAAAAIAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Location.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthcareUI.Models.Bill">
+    <Position X="12" Y="10.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>BIACAAAAQBAAAAAAEAEBEACBAAAAAAQAABAAAQAACAA=</HashCode>
+      <FileName>Models\Bill.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Patient" />
+      <Field Name="_Doctor" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
